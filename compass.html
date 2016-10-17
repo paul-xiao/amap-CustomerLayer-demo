@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+  <head>
+   <meta charset="utf-8" /><title>Animated Compass</title>
+   </head>
+ <body onload='init();'>
+ <canvas id="compass" width="400" height="400"></canvas>
+ <script type="text/javascript">
+ 	// Global variable
+ var img = null,
+	needle = null,
+	ctx = null,
+	degrees = 90;
+ function clearCanvas() {
+	 // clear canvas
+	ctx.clearRect(0, 0, 400,400);
+ }
+ function draw() {
+	clearCanvas();
+	// Draw the compass onto the canvas
+	ctx.drawImage(img, 100, 100);
+	// Save the current drawing state
+	ctx.save();
+    ctx.translate(200, 200);//平移和旋转
+	ctx.rotate(degrees * (Math.PI / 180));
+	// Draw the image back and up
+	ctx.drawImage(needle, -100, -100);
+	ctx.restore();
+	degrees += 5;
+ }
+ function imgLoaded() {
+ 	draw();
+	setInterval(draw, 100);
+ }
+ function init() {
+	var canvas = document.getElementById('compass');
+	if (canvas.getContext('2d')) {
+		ctx = canvas.getContext('2d');
+		needle = new Image();
+		needle.src = 'needle.png';
+		img = new Image();
+		img.src = 'compass.png';
+		img.onload = imgLoaded;
+	} else {
+		alert("Canvas not supported!");
+	}
+}
+ </script>
+</body>
+</html>

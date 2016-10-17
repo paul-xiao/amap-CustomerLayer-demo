@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="style.css">
+<title>塔机监控</title>
+</head>
+<body>
+<div class="warp">
+	<div class="list">
+		<table border="1">
+			<tr>
+				<th width="80">编号</th>
+				<th>编号</th>
+				<th>编号</th>
+				<th>编号</th>
+				<th>编号</th>
+				<th>编号</th>
+				<th>编号</th>
+				<th>编号</th>
+				<th>编号</th>
+				<th>编号</th>
+				<th>编号</th>
+				<th>编号</th>
+				<th>编号</th>
+				<th>编号</th>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td>1</td>
+				<td>1</td>
+				<td>1</td>
+				<td>1</td>
+				<td>1</td>
+				<td>1</td>
+				<td>1</td>
+				<td>1</td>
+				<td>1</td>
+				<td>1</td>
+				<td>1</td>
+				<td>1</td>
+				<td>1</td>
+				
+			</tr>
+		</table>
+	</div>
+
+<div class="left">
+<!-- 塔吊 -->
+	<div class="hook" id="hook">
+	<!-- 钩子 -->
+	</div>
+
+	<button onclick="clear()">停止</button>
+</div>
+<div class="mid" id="mid">
+	<!-- 地图 -->
+
+</div>
+<div class="right">
+	<div class="monitor1"></div>
+	<div class="monitor2"></div>
+</div>
+</div>
+   <script src="http://webapi.amap.com/maps?v=1.3&key=377ad4fda224a24c64eb9185fb3cb042"></script>
+<script type="text/javascript">
+
+var hook=document.getElementById('hook');
+var hook_height=document.getElementById('hook').offsetHeight;
+var hook_left=document.getElementById('hook').offsetLeft;
+
+/*  height: 300px;
+    left: 170px;
+
+    height: 10px;
+    left: 435px;
+
+    */
+
+var i=0;
+	function crane(left,height) {
+		// 起重机
+		hook.style.height=height+'px';
+		hook.style.left=left+'px';
+
+
+	}
+
+
+      var t=setInterval(function(){
+
+      	    if(hook_left-i>170){
+                 // console.log(hook_height+i)
+                 // console.log(hook_left-i)
+                 
+             crane(hook_left-i,hook_height+i);
+             
+
+      	    }
+      	    else if(hook_left-i<370) {
+      	    	i=0;
+                       crane(hook_left-i,hook_height-i);
+                      
+      	    	}else{
+      	    		clearInterval();
+      	    	}
+          
+          i++;  
+            
+      },50)
+			
+
+function clear(){
+	clearInterval(t);
+}
+
+
+
+/*map*/
+var map = new AMap.Map('mid', {
+        resizeEnable: true,
+        center: [116.397428, 39.90923],
+        zoom: 13
+    });
+     var circle = new AMap.Circle({
+        center: new AMap.LngLat("116.403322", "39.920255"),// 圆心位置
+        radius: 1000, //半径
+        strokeColor: "#F33", //线颜色
+        strokeOpacity: 1, //线透明度
+        strokeWeight: 3, //线粗细度
+        fillColor: "#ee2200", //填充颜色
+        fillOpacity: 0.35//填充透明度
+    });
+    circle.setMap(map);
+
+        var canvas = document.createElement('canvas');
+    	var cus = new AMap.CustomLayer(canvas, {
+						zooms: [13, 18],
+						zIndex: 12
+					});
+
+					cus.render = imgLoaded;
+					cus.setMap(map);
+
+      function clearCanvas() {
+	 // clear canvas
+	ctx.clearRect(0, 0, 200, 200);
+ }
+ function draw() {
+	clearCanvas();
+	// Draw the compass onto the canvas
+	ctx.drawImage(img, 0, 0);
+	// Save the current drawing state
+	ctx.save();
+ 	ctx.translate(100, 100);//平移和旋转
+	ctx.rotate(degrees * (Math.PI / 180));
+	// Draw the image back and up
+	ctx.drawImage(needle, -100, -100);
+	ctx.restore();
+	degrees += 5;
+ }
+ function imgLoaded() {
+ 	draw();
+	setInterval(draw, 1000);
+ }
+  
+</script>
+</body>
+</html>
